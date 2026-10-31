@@ -44,15 +44,77 @@
     <div class="content-container">
 
       <!-- ========================================================
-           STATE A: SIGN-IN VIEW (Shown when unauthenticated)
+           STATE A: LANDING PAGE & SIGN-IN VIEW (Shown when unauthenticated)
            ======================================================== -->
-      <section class="auth-section" id="auth-section" aria-labelledby="signin-heading">
+      <section class="auth-section landing-page" id="auth-section" aria-labelledby="landing-hero-heading">
+        
+        <!-- Public Hero & Features Overview -->
+        <div class="landing-hero">
+          <div class="landing-badge-row">
+            <span class="badge">Official MIT Moradabad Hub</span>
+            <span class="badge badge-success">Smart AI Intake Active</span>
+          </div>
+
+          <h1 id="landing-hero-heading" class="landing-hero-title">
+            All Campus Notices,<br>One Single Pulse.
+          </h1>
+
+          <p class="landing-hero-description">
+            Never miss an examination schedule, workshop alert, cultural fest, or placement circular. 
+            Campus Pulse parses noisy WhatsApp forwards, circular emails, and event posters into 
+            verified, searchable information and an organized campus calendar.
+          </p>
+
+          <div class="landing-features-grid">
+            <div class="landing-feature-card">
+              <span class="landing-feature-icon" aria-hidden="true">💬</span>
+              <div class="landing-feature-content">
+                <strong>Smart Input</strong>
+                <span>Paste raw text from WhatsApp forwards, circular emails, or flyers.</span>
+              </div>
+            </div>
+
+            <div class="landing-feature-card">
+              <span class="landing-feature-icon" aria-hidden="true">🤖</span>
+              <div class="landing-feature-content">
+                <strong>AI Extraction</strong>
+                <span>Instant extraction of Title, Date, Time, Venue, and Category via Gemini AI.</span>
+              </div>
+            </div>
+
+            <div class="landing-feature-card">
+              <span class="landing-feature-icon" aria-hidden="true">🔍</span>
+              <div class="landing-feature-content">
+                <strong>Organized View</strong>
+                <span>Search and filter verified campus notices with zero clutter.</span>
+              </div>
+            </div>
+
+            <div class="landing-feature-card">
+              <span class="landing-feature-icon" aria-hidden="true">📅</span>
+              <div class="landing-feature-content">
+                <strong>Campus Calendar</strong>
+                <span>Confirmed dates synced neatly into a monthly event calendar.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="landing-demo-box">
+            <span class="demo-tag">MIT Moradabad Student Portal</span>
+            <div class="demo-creds">
+              <p>Official Access: <code>@mitmoradabad.edu.in</code> accounts only.</p>
+              <p>Use your institute-assigned student roll number &amp; password.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Sign-in Card -->
         <div class="auth-card">
           <div class="auth-card-header">
-            <span class="badge">MIT Moradabad Access Control</span>
-            <h1 id="signin-heading" class="auth-title">Student Sign-In</h1>
+            <span class="badge">Student Access Portal</span>
+            <h2 id="signin-heading" class="auth-title">Student Sign-In</h2>
             <p class="auth-subtitle">
-              Campus Pulse is exclusively accessible to verified students of Moradabad Institute of Technology.
+              Sign in with your official MIT Moradabad student account to access the hub.
             </p>
           </div>
 
@@ -99,7 +161,7 @@
             <div class="restriction-notice">
               <span class="notice-icon" aria-hidden="true">🔒</span>
               <p>
-                <strong>Security Enforcement:</strong> Access is validated against the official MIT Moradabad student registry. Public email domains and unverified accounts are strictly blocked.
+                <strong>Security Enforcement:</strong> Access is restricted to authorized MIT Moradabad students. Public email domains and unverified accounts are strictly blocked.
               </p>
             </div>
           </div>
@@ -114,13 +176,29 @@
         <!-- Purpose Section -->
         <section class="hero-section" aria-labelledby="main-heading">
           <div class="hero-top-row">
-            <span class="badge">Module 7 • Calendar & Organized View</span>
+            <span class="badge">MIT Moradabad Student Hub</span>
             <span class="badge badge-success">✓ Student Session Active</span>
           </div>
           <h1 id="main-heading" class="hero-title">Smart Campus Information Hub</h1>
           <p class="hero-description">
             Welcome, <strong id="hero-student-name">Student</strong>. Submit campus notices, run AI extraction, verify the details, browse verified notices, and view confirmed events on the campus calendar.
           </p>
+
+          <!-- Quick Navigation Shortcuts -->
+          <nav class="workspace-nav" aria-label="Campus Pulse Quick Jump">
+            <a href="#smart-input-section" class="workspace-nav-btn">
+              <span>✍️ Submit Notice</span>
+            </a>
+            <a href="#verification-section" class="workspace-nav-btn">
+              <span>🔍 Verify Extracted</span>
+            </a>
+            <a href="#organized-view-section" class="workspace-nav-btn">
+              <span>📋 Verified Notices</span>
+            </a>
+            <a href="#calendar-section" class="workspace-nav-btn">
+              <span>📅 Campus Calendar</span>
+            </a>
+          </nav>
         </section>
 
         <!-- Verified Student Details Panel -->
@@ -154,7 +232,7 @@
         <!-- ========================================================
              MODULE 3: SMART INPUT SECTION
              ======================================================== -->
-        <section class="smart-input-section" aria-labelledby="smart-input-heading">
+        <section class="smart-input-section" id="smart-input-section" aria-labelledby="smart-input-heading">
           <div class="section-header">
             <div>
               <h2 id="smart-input-heading" class="section-title">Smart Input — Notice Intake</h2>
