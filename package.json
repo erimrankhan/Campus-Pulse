@@ -1,0 +1,25 @@
+{
+  "name": "campus-pulse",
+  "version": "1.0.0",
+  "description": "Smart Campus Information Hub for MIT Moradabad - Module 1: Foundation",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node test/module1.test.js && node test/module2.test.js && node test/module3.test.js && node test/module4.test.js && node test/module6.test.js && node test/module7.test.js"
+  },
+  "keywords": [
+    "campus-pulse",
+    "mit-moradabad",
+    "smart-campus"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "express": "^5.3.0",
+    "helmet": "^8.0.0"
+  }
+}

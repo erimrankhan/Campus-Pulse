@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Pulse — MIT Moradabad</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Application Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-emblem" aria-hidden="true">🏛️</div>
+        <div class="brand-details">
+          <span class="brand-title">Campus Pulse</span>
+          <span class="brand-institution">Moradabad Institute of Technology</span>
+        </div>
+      </div>
+      
+      <div class="header-right">
+        <div class="header-status">
+          <span class="status-indicator" id="status-dot" aria-hidden="true"></span>
+          <span class="status-text" id="status-text">Checking server...</span>
+        </div>
+
+        <!-- Student Authenticated Chip & Sign-out (Shown only when signed in) -->
+        <div class="auth-user-bar" id="auth-user-bar" hidden>
+          <div class="user-chip">
+            <span class="user-chip-badge">MIT Student</span>
+            <span class="user-chip-name" id="user-display-name">Student</span>
+          </div>
+          <button class="btn-signout" id="btn-signout" title="Sign out of Campus Pulse">
+            <span>Sign Out</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Content Area -->
+  <main class="app-main">
+    <div class="content-container">
+
+      <!-- ========================================================
+           STATE A: SIGN-IN VIEW (Shown when unauthenticated)
+           ======================================================== -->
+      <section class="auth-section" id="auth-section" aria-labelledby="signin-heading">
+        <div class="auth-card">
+          <div class="auth-card-header">
+            <span class="badge">MIT Moradabad Access Control</span>
+            <h1 id="signin-heading" class="auth-title">Student Sign-In</h1>
+            <p class="auth-subtitle">
+              Campus Pulse is exclusively accessible to verified students of Moradabad Institute of Technology.
+            </p>
+          </div>
+
+          <!-- Alert / Error Message Banner -->
+          <div class="auth-alert" id="auth-alert" hidden role="alert">
+            <span class="alert-icon" aria-hidden="true">⚠️</span>
+            <span class="alert-message" id="auth-alert-msg"></span>
+          </div>
+
+          <!-- Sign-In Form -->
+          <form id="signin-form" class="auth-form" novalidate>
+            <div class="form-group">
+              <label for="input-email" class="form-label">MIT Institutional Email</label>
+              <input 
+                type="email" 
+                id="input-email" 
+                class="form-input" 
+                placeholder="e.g. rohit.cse22@mitmoradabad.edu.in" 
+                required 
+                autocomplete="username"
+              >
+              <span class="form-hint">Must end with @mitmoradabad.edu.in</span>
+            </div>
+
+            <div class="form-group">
+              <label for="input-password" class="form-label">Password</label>
+              <input 
+                type="password" 
+                id="input-password" 
+                class="form-input" 
+                placeholder="Enter your student password" 
+                required 
+                autocomplete="current-password"
+              >
+            </div>
+
+            <button type="submit" class="btn-primary" id="btn-submit-signin">
+              <span id="btn-signin-text">Sign In to Campus Pulse</span>
+              <span id="btn-signin-spinner" class="spinner" hidden aria-hidden="true"></span>
+            </button>
+          </form>
+
+          <div class="auth-card-footer">
+            <div class="restriction-notice">
+              <span class="notice-icon" aria-hidden="true">🔒</span>
+              <p>
+                <strong>Security Enforcement:</strong> Access is validated against the official MIT Moradabad student registry. Public email domains and unverified accounts are strictly blocked.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           STATE B: PROTECTED WORKSPACE (Shown when authenticated)
+           ======================================================== -->
+      <div id="protected-workspace" hidden>
+
+        <!-- Purpose Section -->
+        <section class="hero-section" aria-labelledby="main-heading">
+          <div class="hero-top-row">
+            <span class="badge">Module 7 • Calendar & Organized View</span>
+            <span class="badge badge-success">✓ Student Session Active</span>
+          </div>
+          <h1 id="main-heading" class="hero-title">Smart Campus Information Hub</h1>
+          <p class="hero-description">
+            Welcome, <strong id="hero-student-name">Student</strong>. Submit campus notices, run AI extraction, verify the details, browse verified notices, and view confirmed events on the campus calendar.
+          </p>
+        </section>
+
+        <!-- Verified Student Details Panel -->
+        <section class="foundation-section" aria-labelledby="student-profile-heading">
+          <div class="section-header">
+            <h2 id="student-profile-heading" class="section-title">Verified Student Profile</h2>
+            <span class="system-time" id="system-time"></span>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <span class="metric-label">Student ID / Roll No</span>
+              <span class="metric-value code-value" id="profile-student-id">—</span>
+              <span class="metric-subtext">Institutional Registry</span>
+            </div>
+
+            <div class="metric-card">
+              <span class="metric-label">Academic Branch</span>
+              <span class="metric-value" id="profile-branch">—</span>
+              <span class="metric-subtext">MIT Moradabad</span>
+            </div>
+
+            <div class="metric-card">
+              <span class="metric-label">Institutional Email</span>
+              <span class="metric-value code-value code-value-compact" id="profile-email">—</span>
+              <span class="metric-subtext">Verified Domain</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             MODULE 3: SMART INPUT SECTION
+             ======================================================== -->
+        <section class="smart-input-section" aria-labelledby="smart-input-heading">
+          <div class="section-header">
+            <div>
+              <h2 id="smart-input-heading" class="section-title">Smart Input — Notice Intake</h2>
+              <p class="section-subtitle">
+                Paste raw campus notice text received through WhatsApp forwards, official college emails, or event poster announcements.
+              </p>
+            </div>
+            <span class="badge badge-primary">Input Stage</span>
+          </div>
+
+          <!-- Submission Feedback Banner (Success or Failure) -->
+          <div class="feedback-banner" id="smart-input-feedback" hidden role="status">
+            <span class="feedback-icon" id="feedback-icon" aria-hidden="true">ℹ️</span>
+            <div class="feedback-content">
+              <strong id="feedback-title">Status</strong>
+              <p id="feedback-msg"></p>
+            </div>
+          </div>
+
+          <!-- Smart Input Form -->
+          <form id="smart-input-form" class="smart-input-card">
+            
+            <!-- Source Origin Type Selector -->
+            <div class="source-selector-row">
+              <label class="form-label">Notice Origin:</label>
+              <div class="source-options">
+                <label class="source-option">
+                  <input type="radio" name="sourceType" value="WhatsApp" checked>
+                  <span class="source-label">💬 WhatsApp Forward</span>
+                </label>
+                <label class="source-option">
+                  <input type="radio" name="sourceType" value="Email">
+                  <span class="source-label">✉️ Official Email</span>
+                </label>
+                <label class="source-option">
+                  <input type="radio" name="sourceType" value="Poster">
+                  <span class="source-label">🖼️ Poster Flyer</span>
+                </label>
+                <label class="source-option">
+                  <input type="radio" name="sourceType" value="General">
+                  <span class="source-label">📌 Other Notice</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Multiline Notice Textarea -->
+            <div class="form-group">
+              <div class="textarea-header">
+                <label for="notice-raw-text" class="form-label">
+                  Notice Text Content <span class="required-asterisk">*</span>
+                </label>
+                <span class="char-counter" id="char-counter">0 / 5,000 characters</span>
+              </div>
+              <textarea 
+                id="notice-raw-text" 
+                class="smart-textarea" 
+                rows="6"
+                maxlength="5000"
+                placeholder="Paste campus notice text here (e.g., forwarded WhatsApp message from class group, official circular email from Dean/HOD, or text transcribed from an event poster)..."
+                required
+                aria-describedby="char-counter"
+              ></textarea>
+              <span class="form-hint">Accepts multiline notices, schedules, circulars, and announcements up to 5,000 characters.</span>
+            </div>
+
+            <!-- Form Actions: Submit, Extract Directly, and Reset -->
+            <div class="smart-input-actions">
+              <button type="submit" class="btn-primary btn-submit-notice" id="btn-submit-notice">
+                <span id="btn-submit-text">Submit Notice Text</span>
+                <span id="btn-submit-spinner" class="spinner" hidden aria-hidden="true"></span>
+              </button>
+
+              <button type="button" class="btn-extract-direct" id="btn-extract-direct">
+                <span id="btn-extract-text">⚡ Submit & Extract with AI</span>
+                <span id="btn-extract-spinner" class="spinner" hidden aria-hidden="true"></span>
+              </button>
+              
+              <button type="button" class="btn-secondary" id="btn-reset-notice">
+                Clear / Reset
+              </button>
+            </div>
+
+          </form>
+        </section>
+
+        <!-- ========================================================
+             MODULE 4: AI EXTRACTION RESULTS SECTION
+             ======================================================== -->
+        <section class="ai-extraction-section" id="ai-extraction-section" aria-labelledby="extraction-heading">
+          <div class="section-header">
+            <div>
+              <h2 id="extraction-heading" class="section-title">AI Extraction Results</h2>
+              <p class="section-subtitle">
+                Automated extraction of structured event attributes (Title, Date, Time, Venue, Category) via Gemini AI.
+              </p>
+            </div>
+            <span class="badge badge-primary">Module 4 • Structured Output</span>
+          </div>
+
+          <!-- Extraction Feedback Banner (Success / Error / Missing API Key) -->
+          <div class="feedback-banner" id="extraction-feedback" hidden role="status">
+            <span class="feedback-icon" id="extraction-feedback-icon" aria-hidden="true">ℹ️</span>
+            <div class="feedback-content">
+              <strong id="extraction-feedback-title">AI Extraction Status</strong>
+              <p id="extraction-feedback-msg"></p>
+            </div>
+          </div>
+
+          <!-- Placeholder when no extraction has been executed yet -->
+          <div class="empty-extraction-box" id="empty-extraction-box">
+            <span class="empty-icon" aria-hidden="true">🤖</span>
+            <h3 class="placeholder-title">No Extraction Performed Yet</h3>
+            <p class="placeholder-description">
+              Submit a campus notice or click <b>Submit & Extract with AI</b> above to automatically extract Title, Date, Time, Venue, and Category.
+            </p>
+          </div>
+
+          <!-- Structured Results Card -->
+          <div class="extraction-results-card" id="extraction-results-card" hidden>
+            <div class="results-grid">
+              
+              <div class="result-item">
+                <span class="result-label">1. Event Title</span>
+                <div class="result-value-box">
+                  <span class="result-value" id="ext-val-title">Not specified</span>
+                </div>
+              </div>
+
+              <div class="result-item">
+                <span class="result-label">2. Event Date</span>
+                <div class="result-value-box">
+                  <span class="result-value code-value" id="ext-val-date">Not specified</span>
+                </div>
+              </div>
+
+              <div class="result-item">
+                <span class="result-label">3. Event Time</span>
+                <div class="result-value-box">
+                  <span class="result-value" id="ext-val-time">Not specified</span>
+                </div>
+              </div>
+
+              <div class="result-item">
+                <span class="result-label">4. Venue / Location</span>
+                <div class="result-value-box">
+                  <span class="result-value" id="ext-val-venue">Not specified</span>
+                </div>
+              </div>
+
+              <div class="result-item">
+                <span class="result-label">5. Category</span>
+                <div class="result-value-box">
+                  <span class="result-value" id="ext-val-category">Not specified</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Original Submitted Notice Reference Comparison -->
+            <div class="comparison-container">
+              <div class="comparison-header">
+                <span class="comparison-title">Original Submitted Notice (Reference Comparison)</span>
+              </div>
+              <pre class="comparison-raw-text" id="ext-comparison-raw"></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             MODULE 5: EXTRACTED INFORMATION VERIFICATION SECTION
+             ======================================================== -->
+        <section class="verification-section" id="verification-section" aria-labelledby="verification-heading">
+          <div class="section-header">
+            <div>
+              <h2 id="verification-heading" class="section-title">Verify & Confirm Extracted Information</h2>
+              <p class="section-subtitle">
+                Review the extracted notice fields, compare with the original text, correct any errors, and confirm the final verified version.
+              </p>
+            </div>
+            <span class="badge badge-primary">Module 5 • Student Verification</span>
+          </div>
+
+          <!-- Verification Feedback Banner (Success / Error / Alert) -->
+          <div class="feedback-banner" id="verification-feedback" hidden role="status">
+            <span class="feedback-icon" id="verification-feedback-icon" aria-hidden="true">ℹ️</span>
+            <div class="feedback-content">
+              <strong id="verification-feedback-title">Verification Status</strong>
+              <p id="verification-feedback-msg"></p>
+            </div>
+          </div>
+
+          <!-- Placeholder when no notice is currently queued for verification -->
+          <div class="empty-verification-box" id="empty-verification-box">
+            <span class="empty-icon" aria-hidden="true">✍️</span>
+            <h3 class="placeholder-title">No Notice Active for Verification</h3>
+            <p class="placeholder-description">
+              Submit a notice and run AI extraction above, or click <b>Verify & Confirm</b> on any submitted notice below to review and confirm information.
+            </p>
+          </div>
+
+          <!-- Verification Form Card -->
+          <div class="verification-card" id="verification-card" hidden>
+            
+            <!-- Reference Section: Original Submitted Notice Text -->
+            <div class="original-reference-box">
+              <div class="reference-header">
+                <span class="reference-title">Original Submitted Notice Text (Reference)</span>
+                <span class="badge badge-secondary" id="verify-notice-id-badge">ID: —</span>
+              </div>
+              <pre class="reference-raw-text" id="verify-original-raw-text"></pre>
+            </div>
+
+            <!-- Verification Form: The 5 Fields -->
+            <form id="verification-form" class="verification-form" novalidate>
+              <div class="form-group">
+                <label for="verify-title" class="form-label">
+                  1. Event Title <span class="required-asterisk">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="verify-title" 
+                  class="form-input" 
+                  placeholder="Enter or correct the event title" 
+                  required
+                >
+                <span class="form-hint">Required. Ensure title accurately reflects the notice.</span>
+              </div>
+
+              <div class="form-grid-row">
+                <div class="form-group">
+                  <label for="verify-date" class="form-label">2. Event Date</label>
+                  <input 
+                    type="date" 
+                    id="verify-date" 
+                    class="form-input"
+                  >
+                  <span class="form-hint">Leave empty if genuinely unspecified.</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="verify-time" class="form-label">3. Event Time</label>
+                  <input 
+                    type="text" 
+                    id="verify-time" 
+                    class="form-input" 
+                    placeholder="e.g. 10:30 AM - 01:00 PM (or leave empty)"
+                  >
+                  <span class="form-hint">Leave empty if genuinely unspecified.</span>
+                </div>
+              </div>
+
+              <div class="form-grid-row">
+                <div class="form-group">
+                  <label for="verify-venue" class="form-label">4. Venue / Location</label>
+                  <input 
+                    type="text" 
+                    id="verify-venue" 
+                    class="form-input" 
+                    placeholder="e.g. Sir M. Visvesvaraya Auditorium, Lab 3, etc."
+                  >
+                  <span class="form-hint">Leave empty if genuinely unspecified.</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="verify-category" class="form-label">5. Category</label>
+                  <select id="verify-category" class="form-input form-select">
+                    <option value="Academic">Academic</option>
+                    <option value="Technical">Technical</option>
+                    <option value="Cultural">Cultural</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Workshop">Workshop</option>
+                    <option value="Seminar">Seminar</option>
+                    <option value="Examination">Examination</option>
+                    <option value="Placement">Placement</option>
+                    <option value="General" selected>General</option>
+                  </select>
+                  <span class="form-hint">Select the best-matching campus category.</span>
+                </div>
+              </div>
+
+              <div class="verification-actions">
+                <button type="submit" class="btn-primary btn-confirm-verification" id="btn-confirm-verification">
+                  <span id="btn-confirm-text">✓ Confirm Verified Information</span>
+                  <span id="btn-confirm-spinner" class="spinner" hidden aria-hidden="true"></span>
+                </button>
+              </div>
+            </form>
+
+            <!-- Confirmed Final Result Summary Card (Shown after student clicks Confirm) -->
+            <div class="confirmed-summary-box" id="confirmed-summary-box" hidden>
+              <div class="confirmed-header">
+                <span class="badge badge-success">✓ Student-Confirmed Final Version</span>
+                <span class="confirmed-timestamp" id="confirmed-timestamp"></span>
+              </div>
+              <div class="confirmed-fields-grid">
+                <div class="confirmed-field">
+                  <strong>Title:</strong> <span id="confirmed-val-title">—</span>
+                </div>
+                <div class="confirmed-field">
+                  <strong>Date:</strong> <span id="confirmed-val-date">—</span>
+                </div>
+                <div class="confirmed-field">
+                  <strong>Time:</strong> <span id="confirmed-val-time">—</span>
+                </div>
+                <div class="confirmed-field">
+                  <strong>Venue:</strong> <span id="confirmed-val-venue">—</span>
+                </div>
+                <div class="confirmed-field">
+                  <strong>Category:</strong> <span id="confirmed-val-category">—</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Preserved Notice Submissions List (Safely Rendered) -->
+        <section class="submitted-notices-section" aria-labelledby="submissions-heading">
+          <div class="section-header">
+            <h2 id="submissions-heading" class="section-title">Submitted Notice Records</h2>
+            <span class="badge badge-secondary" id="submissions-count-badge">0 Submissions</span>
+          </div>
+
+          <div class="submissions-container" id="submissions-container">
+            <div class="empty-submissions" id="empty-submissions-msg">
+              <span class="empty-icon" aria-hidden="true">📄</span>
+              <p>No notices submitted yet in this session. Paste notice text above to submit.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             MODULE 6: ORGANIZED VIEW (VERIFIED NOTICES ONLY)
+             ======================================================== -->
+        <section class="organized-view-section" id="organized-view-section" aria-labelledby="organized-view-heading">
+          <div class="section-header">
+            <div>
+              <h2 id="organized-view-heading" class="section-title">Verified Campus Notices</h2>
+              <p class="section-subtitle">
+                Search and filter student-confirmed notices. Only information verified by MIT students appears here.
+              </p>
+            </div>
+            <span class="badge badge-success" id="organized-count-badge">0 Verified Notices</span>
+          </div>
+
+          <!-- Search & Category Filter Controls -->
+          <form class="search-filter-bar" id="organized-filter-form" role="search" novalidate>
+            <div class="filter-field">
+              <label for="notice-search" class="form-label">Search notices</label>
+              <input
+                type="search"
+                id="notice-search"
+                class="form-input search-input"
+                placeholder="Search by title, notice text, or venue..."
+                autocomplete="off"
+                maxlength="120"
+                aria-describedby="notice-search-hint"
+              >
+              <span class="form-hint" id="notice-search-hint">Case-insensitive. Leading and trailing spaces are ignored.</span>
+            </div>
+
+            <div class="filter-field filter-field-category">
+              <label for="category-filter" class="form-label">Category</label>
+              <select id="category-filter" class="form-input category-filter-select">
+                <option value="">All Categories</option>
+                <option value="Academic">Academic</option>
+                <option value="Technical">Technical</option>
+                <option value="Cultural">Cultural</option>
+                <option value="Sports">Sports</option>
+                <option value="Workshop">Workshop</option>
+                <option value="Seminar">Seminar</option>
+                <option value="Examination">Examination</option>
+                <option value="Placement">Placement</option>
+                <option value="General">General</option>
+              </select>
+            </div>
+
+            <button type="button" class="btn-clear-filters" id="btn-clear-filters">
+              Clear Filters
+            </button>
+          </form>
+
+          <!-- Loading State -->
+          <div class="notice-state notice-loading" id="organized-loading" hidden role="status">
+            <span class="organized-spinner" aria-hidden="true"></span>
+            <p>Loading verified notices…</p>
+          </div>
+
+          <!-- Error State -->
+          <div class="notice-state notice-error" id="organized-error" hidden role="alert">
+            <span class="notice-error-icon" aria-hidden="true">⚠️</span>
+            <p><strong>Unable to load notices.</strong></p>
+            <p id="organized-error-message">Please check your connection and try again.</p>
+            <button type="button" class="btn-secondary btn-retry" id="btn-retry-organized">Retry</button>
+          </div>
+
+          <!-- Empty / No Results State -->
+          <div class="notice-state notice-no-results" id="organized-empty" hidden role="status">
+            <span class="notice-no-results-icon" aria-hidden="true">📭</span>
+            <p><strong id="organized-empty-title">No verified notices yet</strong></p>
+            <p id="organized-empty-message">Confirmed notices will appear here once students verify them.</p>
+          </div>
+
+          <!-- Verified Notice List -->
+          <div class="organized-notices-list" id="organized-notices-list" aria-live="polite"></div>
+        </section>
+
+        <!-- ========================================================
+             MODULE 7: CALENDAR (VERIFIED EVENTS ONLY)
+             ======================================================== -->
+        <section class="calendar-section" id="calendar-section" aria-labelledby="calendar-heading">
+          <div class="section-header">
+            <div>
+              <h2 id="calendar-heading" class="section-title">Campus Calendar</h2>
+              <p class="section-subtitle">
+                Verified campus events placed on their confirmed dates. Notices without a confirmed date remain in the Organized View.
+              </p>
+            </div>
+            <span class="badge badge-success" id="calendar-count-badge">0 Events This Month</span>
+          </div>
+
+          <div class="calendar-toolbar">
+            <button
+              type="button"
+              class="calendar-nav-btn"
+              id="calendar-prev-month"
+              aria-label="Show previous month"
+              title="Previous month"
+            >
+              <span aria-hidden="true">←</span>
+              <span class="calendar-nav-text">Previous</span>
+            </button>
+
+            <h3 class="calendar-month-heading" id="calendar-month-heading" aria-live="polite">—</h3>
+
+            <button
+              type="button"
+              class="calendar-nav-btn"
+              id="calendar-next-month"
+              aria-label="Show next month"
+              title="Next month"
+            >
+              <span class="calendar-nav-text">Next</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <!-- Loading State -->
+          <div class="notice-state notice-loading" id="calendar-loading" hidden role="status">
+            <span class="organized-spinner" aria-hidden="true"></span>
+            <p>Loading verified events…</p>
+          </div>
+
+          <!-- Error State -->
+          <div class="notice-state notice-error" id="calendar-error" hidden role="alert">
+            <span class="notice-error-icon" aria-hidden="true">⚠️</span>
+            <p><strong>Unable to load the calendar.</strong></p>
+            <p id="calendar-error-message">Please check your connection and try again.</p>
+            <button type="button" class="btn-secondary btn-retry" id="btn-retry-calendar">Retry</button>
+          </div>
+
+          <!-- Empty Month Note -->
+          <div class="calendar-empty-note" id="calendar-empty-note" hidden role="status">
+            <span aria-hidden="true">📅</span>
+            <p>No verified events are scheduled for this month.</p>
+          </div>
+
+          <!-- Monthly Calendar -->
+          <div class="calendar-table-wrapper" id="calendar-table-wrapper">
+            <table class="calendar-grid" id="calendar-grid" aria-label="Monthly verified event calendar">
+              <thead>
+                <tr>
+                  <th scope="col">Sun</th>
+                  <th scope="col">Mon</th>
+                  <th scope="col">Tue</th>
+                  <th scope="col">Wed</th>
+                  <th scope="col">Thu</th>
+                  <th scope="col">Fri</th>
+                  <th scope="col">Sat</th>
+                </tr>
+              </thead>
+              <tbody id="calendar-body"></tbody>
+            </table>
+          </div>
+
+          <!-- Selected Date Event Details -->
+          <div class="calendar-details" id="calendar-details" aria-live="polite">
+            <div class="calendar-details-header">
+              <h3 class="calendar-details-heading" id="calendar-details-heading">Select a date</h3>
+              <span class="badge badge-secondary" id="calendar-details-count" hidden>0 events</span>
+            </div>
+            <p class="calendar-details-hint" id="calendar-details-hint">
+              Select a date in the calendar to view its verified event details.
+            </p>
+            <div class="calendar-event-details" id="calendar-event-details"></div>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Application Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <p class="footer-text">
+        <strong>Campus Pulse</strong> — Moradabad Institute of Technology (MIT Moradabad)
+      </p>
+      <p class="footer-meta">
+        Verified Notices &amp; Calendar • Module 7
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
